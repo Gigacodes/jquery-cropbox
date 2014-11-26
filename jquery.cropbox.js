@@ -61,56 +61,56 @@
             hammerit = this.$image.hammer();
           else
             hammerit = Hammer(this.$image.get(0));
-
+          hammerit.get('pinch').set({ enable: true });
+          hammerit.get('pan').set({ direction: Hammer.DIRECTION_ALL });
           hammerit.on('touch', function(e) {
-            e.gesture.preventDefault();
-          }).on("dragleft dragright dragup dragdown", function(e) {
+            e.preventDefault();
+          }).on("panleft panright panup pandown", function(e) {
             if (!dragData)
               dragData = {
                 startX: self.img_left,
                 startY: self.img_top,
               };
-            dragData.dx = e.gesture.deltaX;
-            dragData.dy = e.gesture.deltaY;
-            e.gesture.preventDefault();
-            e.gesture.stopPropagation();
+            dragData.dx = e.deltaX;
+            dragData.dy = e.deltaY;
+            e.preventDefault();
             self.drag.call(self, dragData, true);
           }).on('release', function(e) {
-            e.gesture.preventDefault();
+            e.preventDefault();
             dragData = null;
             self.update.call(self);
           }).on('doubletap', function(e) {
-            e.gesture.preventDefault();
+            e.preventDefault();
             self.zoomIn.call(self);
           }).on('pinchin', function (e) {
-            e.gesture.preventDefault();
+            e.preventDefault();
             self.zoomOut.call(self);
           }).on('pinchout', function (e) {
-            e.gesture.preventDefault();
+            e.preventDefault();
             self.zoomIn.call(self);
           });
         } else {
           // prevent IE8's default drag functionality
           this.$image.on("dragstart", function () { return false; });
-          this.$image.on('mousedown.' + pluginName, function(e1) {
+          this.$image.on('mousedown', function(e1) {
             var dragData = {
               startX: self.img_left,
               startY: self.img_top,
             };
             e1.preventDefault();
-            $(document).on('mousemove.' + pluginName, function (e2) {
+            $(document).on('mousemove', function (e2) {
               dragData.dx = e2.pageX - e1.pageX;
               dragData.dy = e2.pageY - e1.pageY;
               self.drag.call(self, dragData, true);
-            }).on('mouseup.' + pluginName, function() {
+            }).on('mouseup', function() {
               self.update.call(self);
-              $(document).off('mouseup.' + pluginName);
-              $(document).off('mousemove.' + pluginName);
+              $(document).off('mouseup');
+              $(document).off('mousemove');
             });
           });
         }
         if ($.fn.mousewheel) {
-          this.$image.on('mousewheel.' + pluginName, function (e) {
+          this.$image.on('mousewheel', function (e) {
             e.preventDefault();
             if (e.deltaY < 0)
               self.zoomIn.call(self);
@@ -125,14 +125,15 @@
         self.img_top = 0;
         self.img_left = 0;
         self.$image.css({width: '', left: self.img_left, top: self.img_top});
-        self.$frame.width(self.options.width).height(self.options.height);
-        self.$frame.off('.' + pluginName);
+        self.$frame.width(self.options.width * 1).height(self.options.height * 1);
+        self.$frame.off('mouseenter');
+        self.$frame.off('mouseleave');
         self.$frame.removeClass('hover');
         if (self.options.showControls === 'always' || self.options.showControls === 'auto' && is_touch_device())
           self.$frame.addClass('hover');
         else if (self.options.showControls !== 'never') {
-          self.$frame.on('mouseenter.' + pluginName, function () { self.$frame.addClass('hover'); });
-          self.$frame.on('mouseleave.' + pluginName, function () { self.$frame.removeClass('hover'); });
+          self.$frame.on('mouseenter', function () { self.$frame.addClass('hover'); });
+          self.$frame.on('mouseleave', function () { self.$frame.removeClass('hover'); });
         }
 
         // Image hack to get width and height on IE
@@ -162,7 +163,7 @@
         else if (typeof Hammer !== 'undefined')
           hammerit = Hammer(this.$image.get(0));
         if (hammerit)
-          hammerit.off('mousedown dragleft dragright dragup dragdown release doubletap pinchin pinchout');
+          hammerit.off('mousedown panleft panright panup pandown release doubletap pinchin pinchout');
         this.$frame.off('.' + pluginName);
         this.$image.off('.' + pluginName);
         this.$image.css({width: '', left: '', top: ''});
