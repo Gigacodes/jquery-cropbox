@@ -149,7 +149,7 @@
             self.setCrop.call(self, self.options.result);
           else
             self.zoom.call(self, self.minPercent);
-          self.$image.fadeIn('fast');
+          self.$image.show();
         };
         // onload has to be set before src for IE8
         // otherwise it never fires
