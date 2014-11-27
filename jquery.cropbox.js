@@ -75,7 +75,7 @@
             dragData.dy = e.deltaY;
             e.preventDefault();
             self.drag.call(self, dragData, true);
-          }).on('release', function(e) {
+          }).on('panend', function(e) {
             e.preventDefault();
             dragData = null;
             self.update.call(self);
@@ -163,7 +163,7 @@
         else if (typeof Hammer !== 'undefined')
           hammerit = Hammer(this.$image.get(0));
         if (hammerit)
-          hammerit.off('mousedown panleft panright panup pandown release doubletap pinchin pinchout');
+          hammerit.off('mousedown panleft panright panup pandown panend doubletap pinchin pinchout');
         this.$frame.off('.' + pluginName);
         this.$image.off('.' + pluginName);
         this.$image.css({width: '', left: '', top: ''});
