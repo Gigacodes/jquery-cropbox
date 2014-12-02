@@ -124,7 +124,7 @@
         var self = this;
         self.img_top = 0;
         self.img_left = 0;
-        self.$image.css({width: '', left: self.img_left, top: self.img_top});
+        self.$image.css({width: '', height: '', left: self.img_left, top: self.img_top});
         self.$frame.width(self.options.width * 1).height(self.options.height * 1);
         self.$frame.off('mouseenter');
         self.$frame.off('mouseleave');
@@ -166,7 +166,7 @@
           hammerit.off('mousedown panleft panright panup pandown panend doubletap pinchin pinchout');
         this.$frame.off('.' + pluginName);
         this.$image.off('.' + pluginName);
-        this.$image.css({width: '', left: '', top: ''});
+        this.$image.css({width: '', height: '', left: '', top: ''});
         this.$image.removeClass('cropImage');
         this.$image.removeData(pluginName);
         this.$image.insertAfter(this.$frame);
@@ -188,7 +188,7 @@
         this.img_height = Math.ceil(this.height*this.percent);
         this.img_left = -Math.floor(result.cropX*this.percent);
         this.img_top = -Math.floor(result.cropY*this.percent);
-        this.$image.css({ width: this.img_width, left: this.img_left, top: this.img_top });
+        this.$image.css({ width: this.img_width, height: this.img_height, left: this.img_left, top: this.img_top });
         this.update();
       },
 
@@ -208,7 +208,7 @@
           this.img_top = fill((this.options.height - this.img_height) / 2, this.img_height, this.options.height);
         }
 
-        this.$image.css({ width: this.img_width, left: this.img_left, top: this.img_top });
+        this.$image.css({ width: this.img_width, height: this.img_height, left: this.img_left, top: this.img_top });
         this.update();
       },
       zoomIn: function() {
